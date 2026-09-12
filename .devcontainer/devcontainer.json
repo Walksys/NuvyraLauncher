@@ -1,0 +1,21 @@
+{
+  "name": "Nuvyra Launcher Development",
+  "image": "mcr.microsoft.com/devcontainers/java:21",
+  "features": {
+    "ghcr.io/devcontainers/features/android-sdk:2": {
+      "platforms": "android-35,android-37",
+      "build-tools": "35.0.0,34.0.0",
+      "ndk": "25.2.9519653"
+    }
+  },
+  "postCreateCommand": "chmod +x gradlew && git config core.autocrlf false",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "fwcd.kotlin",
+        "vscjava.vscode-gradle",
+        "redhat.java"
+      ]
+    }
+  }
+}
