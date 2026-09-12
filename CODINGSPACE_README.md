@@ -1,20 +1,22 @@
 # Nuvyra Launcher — Codespaces source package
 
-هذه الحزمة مخصصة لرفع مصدر المشروع إلى GitHub وفتحه عبر GitHub Codespaces. تحتوي على ملفات المصدر والتعديلات الخاصة بـNuvyra Launcher، ولا تحتوي على APK أو مفاتيح توقيع أو مفاتيح API أو ملفات build.
+This package is prepared for GitHub and GitHub Codespaces. It contains the editable source and project configuration for Nuvyra Launcher. APKs, signing keys, API keys, generated build output, and private credentials are intentionally excluded.
 
-## البناء
+## Build
 
-بعد فتح المشروع في Codespaces:
+After opening the repository in Codespaces, run:
 
 ```bash
 chmod +x gradlew
 ./gradlew :NuvyraLauncher:assembleRelease -Darch=all
 ```
 
-قبل استخدام CurseForge، يجب توفير مفتاح رسمي مصرح به خارج Git، مثلًا عبر متغير البيئة `CURSEFORGE_API_KEY` أو ملف محلي غير متتبع باسم `.curseforge_api.txt`. لا تضع المفتاح داخل المستودع أو داخل APK منشور.
+The project requires a compatible Java version and Android SDK/NDK. The intended development environment is described in `.devcontainer/devcontainer.json`.
 
-## الشفافية والأمان
+For CurseForge integration, provide an officially issued API key through a local environment variable or an ignored local file. Never commit API keys, OAuth credentials, signing keys, or passwords to GitHub.
 
-المشروع مفتوح المصدر ويمكن مراجعة التعديلات قبل البناء. لا تستخدم ملفات APK أو JAR أو سكربتات مجهولة المصدر، وافحص أي dependency قبل إضافتها. ملفات الأسرار والمفاتيح وملفات التوقيع مستبعدة من Git عمدًا.
+## Security and transparency
 
-يحترم المشروع تراخيص GPL وملاحظات حقوق المؤلف للمشروع الأصلي والمكتبات التابعة. يجب تغيير الهوية بوضوح عند توزيع نسخة معدلة، والإبقاء على إشعارات الترخيص المطلوبة.
+Review source changes and third-party dependencies before building. Do not install unknown APKs, JAR files, native libraries, or scripts. The source package deliberately excludes binary runtime assets and generated files so that the public repository remains small and auditable.
+
+This project preserves the applicable GPL license, upstream copyright notices, contributor credits, and third-party license notices. See `LICENSE` and `NOTICE_WALKsys.md` before redistributing modified builds.
