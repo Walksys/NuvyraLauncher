@@ -133,9 +133,9 @@ Before opening a pull request, explain what changed and include clear steps to t
 
 - If you want to play Minecraft using an offline / non-premium (cracked) account, follow this quick trick to bypass the limit:
 
-- 1. Open your file manager and go to this exact path:
+1. Open your file manager and go to this exact path:
 com.nuvyra.launcher/files/
-- 2. Inside the files folder, create a new empty file and name it exactly:
+2. Inside the files folder, create a new empty file and name it exactly:
 ```
 circumventLimit
 ```
