@@ -129,6 +129,17 @@ Contributions are welcome. You can help with code, documentation, translations, 
 
 Before opening a pull request, explain what changed and include clear steps to test it. Please remove passwords, access tokens, API keys, account identifiers, and private file paths from logs and screenshots.
 
+## ⚠️ Important Setup (Offline / Non-Premium Accounts Trick)
+
+If you want to play Minecraft using an offline / non-premium (cracked) account, follow this quick trick to bypass the limit:
+
+1. Open your file manager and go to this exact path:
+com.nuvyra.launcher/files/
+2. Inside the files folder, create a new empty file and name it exactly:
+circumventLimit
+
+Once this file is created in the path above, open the launcher and you can log in with your offline account smoothly! Enjoy! 🔥✨
+
 ## License
 
 Nuvyra Launcher is free and open-source software. See [`LICENSE`](LICENSE) and [`NOTICE_Walksys.md`](NOTICE_Walksys.md) for the applicable license and required project notices.
