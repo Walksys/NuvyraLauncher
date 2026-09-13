@@ -42,37 +42,6 @@ When a universal APK is provided, it supports the Android ABIs included in that 
 
 ## Building
 
-### Requirements
-
-- Android Studio or GitHub Codespaces.
-
-- A compatible Java Development Kit.
-
-- Android SDK and the Android SDK Build Tools.
-
-- Android NDK version required by the Gradle configuration.
-
-- Enough disk space for Android dependencies and optional runtime assets.
-
-### Build the launcher
-
-From the repository root, run:
-
-```bash
-chmod +x gradlew
-./gradlew :NuvyraLauncher:assembleRelease -Darch=all
-```
-
-For a debug build:
-
-```bash
-./gradlew :NuvyraLauncher:assembleDebug
-```
-
-On Windows, use `gradlew.bat` instead of `./gradlew`.
-
-The repository includes `.devcontainer/devcontainer.json` for GitHub Codespaces. Do not commit signing keys, passwords, OAuth credentials, or API keys. CurseForge access must use an officially issued API key provided through local, ignored configuration.
-
 ## Features
 
 - Minecraft: Java Edition version installation and management.
