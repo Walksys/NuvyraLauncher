@@ -136,7 +136,7 @@ Before opening a pull request, explain what changed and include clear steps to t
 - 1. Open your file manager and go to this exact path:
 com.nuvyra.launcher/files/
 - 2. Inside the files folder, create a new empty file and name it exactly:
-```bash
+```
 circumventLimit
 ```
 
