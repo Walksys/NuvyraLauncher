@@ -33,7 +33,7 @@ fun getKeyFromLocal(envKey: String, fileName: String? = null, default: String? =
     val key = System.getenv(envKey)
     return key ?: fileName?.let {
         val file = File(rootDir, fileName)
-        if (file.canRead() && file.isFile) file.readText() else null
+        if (file.canRead() && file.isFile) file.readText().trim() else null
     } ?: default ?: run {
         logger.warn("BUILD: $envKey not set; related features may throw exceptions.")
         ""
@@ -266,6 +266,7 @@ dependencies {
     //Utils
     implementation(libs.bytehook)
     implementation(libs.gson)
+    implementation("com.github.GeyserMC:OpenNBT:1.5")
     implementation(libs.commons.io)
     implementation(libs.commons.codec)
     implementation(libs.commons.compress)

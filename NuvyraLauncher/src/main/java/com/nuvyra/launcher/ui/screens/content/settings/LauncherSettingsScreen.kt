@@ -169,6 +169,7 @@ fun LauncherSettingsScreen(
                         .offset { IntOffset(x = 0, y = yOffset.roundToPx()) }
                 ) {
                     var customColorOperation by remember { mutableStateOf<CustomColorOperation>(CustomColorOperation.None) }
+                    var showScreenVideos by remember { mutableStateOf(false) }
                     CustomColorOperation(
                         customColorOperation = customColorOperation,
                         updateOperation = { customColorOperation = it }
@@ -231,6 +232,39 @@ fun LauncherSettingsScreen(
                         title = stringResource(R.string.settings_launcher_festivals_effects_title),
                         summary = stringResource(R.string.settings_launcher_festivals_effects_summary)
                     )
+
+                    SwitchSettingsCard(
+                        modifier = Modifier.fillMaxWidth(),
+                        position = CardPosition.Middle,
+                        unit = AllSettings.screenVideoEnabled,
+                        title = stringResource(R.string.settings_screen_video_title),
+                        summary = stringResource(R.string.settings_screen_video_summary)
+                    )
+
+                    SettingsCard(
+                        modifier = Modifier.fillMaxWidth(),
+                        position = CardPosition.Middle
+                    ) {
+                        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Text(
+                                text = stringResource(R.string.screen_video_files),
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                            Text(
+                                text = stringResource(R.string.screen_video_folder),
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                            Button(
+                                modifier = Modifier.fillMaxWidth(),
+                                onClick = { showScreenVideos = true }
+                            ) {
+                                Text(stringResource(R.string.screen_video_files))
+                            }
+                        }
+                    }
+                    if (showScreenVideos) {
+                        ScreenVideoFilesDialog(onDismiss = { showScreenVideos = false })
+                    }
 
                     SwitchSettingsCard(
                         modifier = Modifier.fillMaxWidth(),
@@ -1007,6 +1041,49 @@ private fun BackgroundOperation(
             LaunchedEffect(Unit) {
                 backgroundViewModel.delete()
                 changeOperation(BackgroundOperation.None)
+            }
+        }
+    }
+}
+
+@Composable
+private fun ScreenVideoFilesDialog(onDismiss: () -> Unit) {
+    val files = remember {
+        PathManager.DIR_SCREEN_VIDEOS
+            .listFiles { file -> file.isFile && file.extension.equals("mp4", ignoreCase = true) }
+            ?.sortedByDescending { it.lastModified() }
+            .orEmpty()
+    }
+    Dialog(
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
+        Surface(
+            modifier = Modifier.fillMaxWidth(0.8f),
+            shape = MaterialTheme.shapes.extraLarge,
+            color = cardColor(false),
+            contentColor = onCardColor()
+        ) {
+            Column(
+                modifier = Modifier.padding(20.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Text(stringResource(R.string.screen_video_files), style = MaterialTheme.typography.titleLarge)
+                if (files.isEmpty()) {
+                    Text(stringResource(R.string.screen_video_no_files))
+                } else {
+                    LazyColumn(
+                        modifier = Modifier.heightIn(max = 360.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(files) { file ->
+                            Text("${file.name} (${file.length() / 1024 / 1024} MB)")
+                        }
+                    }
+                }
+                Button(modifier = Modifier.fillMaxWidth(), onClick = onDismiss) {
+                    Text(stringResource(R.string.generic_close))
+                }
             }
         }
     }

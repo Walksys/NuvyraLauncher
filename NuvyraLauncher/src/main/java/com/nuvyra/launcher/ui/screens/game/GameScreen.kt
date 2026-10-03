@@ -83,6 +83,7 @@ import com.nuvyra.launcher.game.sdl.SdlTextSender
 import com.nuvyra.launcher.game.support.touch_controller.touchControllerInputModifier
 import com.nuvyra.launcher.game.support.touch_controller.touchControllerTouchModifier
 import com.nuvyra.launcher.game.version.installed.Version
+import com.nuvyra.launcher.game.video.GameScreenRecorderController
 import com.nuvyra.launcher.setting.AllSettings
 import com.nuvyra.launcher.setting.enums.isLauncherInDarkTheme
 import com.nuvyra.launcher.setting.enums.toAction
@@ -549,7 +550,15 @@ fun GameScreen(
         viewModel = terracottaViewModel,
         onShowToast = { text, duration ->
             eventViewModel.sendToast(text, duration)
-        }
+        },
+        screenVideoEnabled = AllSettings.screenVideoEnabled.state,
+        isRecording = GameScreenRecorderController.isRecording,
+        onStartRecording = {
+            if (!GameScreenRecorderController.start()) {
+                eventViewModel.sendToast(com.nuvyra.launcher.ui.androidText(R.string.generic_error))
+            }
+        },
+        onStopRecording = { GameScreenRecorderController.stop() }
     )
 
     BoxWithConstraints(

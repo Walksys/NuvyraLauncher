@@ -60,7 +60,11 @@ sealed interface TerracottaOperation {
 @Composable
 fun TerracottaOperation(
     viewModel: TerracottaViewModel,
-    onShowToast: (AndroidStringText, Int) -> Unit = { _, _ -> }
+    onShowToast: (AndroidStringText, Int) -> Unit = { _, _ -> },
+    screenVideoEnabled: Boolean = false,
+    isRecording: Boolean = false,
+    onStartRecording: () -> Unit = {},
+    onStopRecording: () -> Unit = {}
 ) {
     val scope = rememberCoroutineScope()
 
@@ -161,7 +165,11 @@ fun TerracottaOperation(
                 onBack = {
                     Terracotta.setWaiting(true)
                 },
-                onShowToast = { text -> onShowToast(androidText(text), Toast.LENGTH_SHORT) }
+                onShowToast = { text -> onShowToast(androidText(text), Toast.LENGTH_SHORT) },
+                screenVideoEnabled = screenVideoEnabled,
+                isRecording = isRecording,
+                onStartRecording = onStartRecording,
+                onStopRecording = onStopRecording
             )
         }
     }

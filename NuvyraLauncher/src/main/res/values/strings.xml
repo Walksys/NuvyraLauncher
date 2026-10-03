@@ -1463,4 +1463,12 @@
     <string name="fm_property_folders">Folders</string>
     <string name="fm_calculating">Calculating…</string>
     <string name="fm_name_conflict">Name conflicts with an existing entry</string>
+    <string name="settings_screen_video_title">Screen Video</string>
+    <string name="settings_screen_video_summary">Show an in-game control to record the game view without launcher controls.</string>
+    <string name="screen_video_record">Record</string>
+    <string name="screen_video_stop">Stop recording</string>
+    <string name="screen_video_saved">Video saved: %s</string>
+    <string name="screen_video_folder">Videos are saved in the screen_videos folder.</string>
+    <string name="screen_video_files">Recorded videos</string>
+    <string name="screen_video_no_files">No recorded videos yet.</string>
 </resources>

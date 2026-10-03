@@ -394,6 +394,9 @@ object AllSettings : SettingsRegistry() {
      */
     val launcherFestivalEffects = boolSetting("launcherFestivalEffects", true)
 
+    /** Enable the in-game Screen Video control. */
+    val screenVideoEnabled = boolSetting("screenVideoEnabled", false)
+
     /**
      * 动画倍速
      */

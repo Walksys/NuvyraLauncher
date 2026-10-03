@@ -57,6 +57,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.viewinterop.AndroidView
@@ -94,6 +95,7 @@ import com.nuvyra.launcher.game.plugin.PluginLoader
 import com.nuvyra.launcher.game.renderer.Renderers
 import com.nuvyra.launcher.game.sdl.SdlBridge
 import com.nuvyra.launcher.game.version.installed.Version
+import com.nuvyra.launcher.game.video.GameScreenRecorderController
 import com.nuvyra.launcher.setting.AllSettings
 import com.nuvyra.launcher.setting.enums.ResolutionRule
 import com.nuvyra.launcher.terracotta.TerracottaVPNService
@@ -523,6 +525,7 @@ class VMActivity : BaseAppCompatActivity(), SurfaceTextureListener, SurfaceHolde
                         },
                         lifecycleScope = lifecycleScope
                     )
+
                 }
             }
         }
@@ -648,6 +651,7 @@ class VMActivity : BaseAppCompatActivity(), SurfaceTextureListener, SurfaceHolde
     }
 
     override fun onDestroy() {
+        GameScreenRecorderController.clear()
         stopAllService()
         withHandler { onDestroy() }
         SdlBridge.reset()
@@ -889,6 +893,7 @@ class VMActivity : BaseAppCompatActivity(), SurfaceTextureListener, SurfaceHolde
                             holder.addCallback(this@VMActivity)
                             // SDL 模式需要父 ViewGroup（输入法 EditText 附加用）
                             gameSurfaceView = this
+                            GameScreenRecorderController.attach(this)
                         }.also { surface ->
                             applySizeToSurface = { width, height ->
                                 surface.holder.setFixedSize(width, height)
@@ -902,6 +907,7 @@ class VMActivity : BaseAppCompatActivity(), SurfaceTextureListener, SurfaceHolde
                             surfaceTextureListener = this@VMActivity
                         }.also { texture ->
                             gameSurfaceView = texture
+                            GameScreenRecorderController.attach(texture)
                             applySizeToSurface = { width, height ->
                                 texture.surfaceTexture?.setDefaultBufferSize(width, height)
                             }

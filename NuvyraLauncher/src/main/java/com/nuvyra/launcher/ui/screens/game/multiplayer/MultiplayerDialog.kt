@@ -40,6 +40,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -119,7 +120,11 @@ fun MultiplayerDialog(
     onGuestPositive: (roomCode: String) -> Unit,
     onGuestCopyUrl: (TerracottaState.GuestOK) -> Unit,
     onBack: () -> Unit,
-    onShowToast: (AndroidStringText) -> Unit = {}
+    onShowToast: (AndroidStringText) -> Unit = {},
+    screenVideoEnabled: Boolean = false,
+    isRecording: Boolean = false,
+    onStartRecording: () -> Unit = {},
+    onStopRecording: () -> Unit = {}
 ) {
     Dialog(
         onDismissRequest = {},
@@ -271,6 +276,20 @@ fun MultiplayerDialog(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
+                        if (screenVideoEnabled) {
+                            Button(
+                                onClick = if (isRecording) onStopRecording else onStartRecording,
+                                modifier = Modifier.padding(end = 8.dp)
+                            ) {
+                                Text(
+                                    stringResource(
+                                        if (isRecording) R.string.screen_video_stop
+                                        else R.string.screen_video_record
+                                    )
+                                )
+                            }
+                        }
+
                         //版本号
                         Column(modifier = Modifier.weight(1f)) {
                             val terracottaVer0 = terracottaVer ?: stringResource(R.string.generic_loading)
