@@ -29,7 +29,6 @@ import com.movtery.layer_controller.utils.saveToFile
 import com.nuvyra.launcher.context.copyAssetFile
 import com.nuvyra.launcher.path.PathManager
 import com.nuvyra.launcher.setting.AllSettings
-import com.nuvyra.launcher.utils.file.readString
 import com.nuvyra.launcher.utils.logging.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -41,8 +40,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerializationException
 import org.apache.commons.io.FileUtils
+import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.InputStream
+import java.util.zip.ZipInputStream
 
 private const val TAG = "ControlManager"
 
@@ -215,11 +216,22 @@ object ControlManager {
     ) = withContext(Dispatchers.IO) {
         val file = getNewRandomFile()
         try {
-            inputStream.use { stream ->
-                val jsonString = stream.readString()
-                val layout = loadLayoutFromString(jsonString)
-                layout.saveToFile(file)
+            val payload = inputStream.use { it.readBytes() }
+            // Mojo/Pojav exports are ZIP containers with a layout.json entry;
+            // Nuvyra exports plain JSON. Accept both formats.
+            val jsonString = if (payload.size >= 4 &&
+                payload[0] == 'P'.code.toByte() && payload[1] == 'K'.code.toByte()
+            ) {
+                ZipInputStream(ByteArrayInputStream(payload)).use { zip ->
+                    generateSequence { zip.nextEntry }
+                        .firstOrNull { !it.isDirectory && it.name.substringAfterLast('/') == "layout.json" }
+                        ?.let { zip.readBytes().toString(Charsets.UTF_8) }
+                        ?: throw IllegalArgumentException("The archive does not contain layout.json")
+                }
+            } else {
+                payload.toString(Charsets.UTF_8)
             }
+            loadLayoutFromString(jsonString).saveToFile(file)
             onFinished()
         } catch (e: SerializationException) {
             FileUtils.deleteQuietly(file)

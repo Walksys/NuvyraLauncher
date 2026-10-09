@@ -53,14 +53,11 @@ object OptiFineVersions {
         force: Boolean = false,
         gameVersion: String
     ): List<OptiFineVersion>? = withContext(Dispatchers.IO) {
-        if (isChinaMainland()) {
-            runMirrorable(
-                listOf(fetchOfficialSource(force), fetchBMCLAPISource(force)).orderedByGameSourcePreference()
-            )
-        } else {
-            fetchOfficialVersions(force)
-        }?.filter {
-            it.inherit == gameVersion
+        // The catalog is intentionally official-only. BMCLAPI is still used
+        // by the downloader as a fallback, but its catalog may include
+        // preview/third-party entries that should not be shown here.
+        fetchOfficialVersions(force)?.filter {
+            it.inherit == gameVersion && !it.isPreview
         }
     }
 

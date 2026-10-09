@@ -89,7 +89,10 @@ fun getForgeLikeInstallTask(
                     tempGameFolder = tempGameFolder,
                     tempMinecraftDir = tempMinecraftDir,
                     tempVersionJson = tempVersionJson,
-                    tempVanillaJar = tempVanillaJar
+                    tempVanillaJar = tempVanillaJar,
+                    // Modern Forge and NeoForge installers require Java 17+.
+                    // Legacy Forge does not use this processor path.
+                    processorJre = Jre.JRE_17
                 )
             } else { //旧版 Forge
                 installOldForge(
@@ -119,7 +122,8 @@ private suspend fun installNewForgeHMCLWay(
     tempGameFolder: File,
     tempMinecraftDir: File,
     tempVersionJson: File,
-    tempVanillaJar: File
+    tempVanillaJar: File,
+    processorJre: Jre
 ) = withContext(Dispatchers.IO) {
     task.updateProgress(-1f)
 
@@ -187,7 +191,8 @@ private suspend fun installNewForgeHMCLWay(
         tempMinecraftDir = tempMinecraftDir,
         tempGameDir = tempGameFolder,
         processors = processors,
-        vars = vars
+        vars = vars,
+        processorJre = processorJre
     )
 }
 
@@ -284,7 +289,8 @@ private suspend fun runProcessors(
     tempMinecraftDir: File,
     tempGameDir: File,
     processors: List<ForgeLikeInstallProcessor>,
-    vars: Map<String, String>
+    vars: Map<String, String>,
+    processorJre: Jre
 ): Unit = withContext(Dispatchers.IO) {
     //优先构建所有需要执行的命令，以便于更好的计算进度
     val commandList = processors.mapNotNull { processor ->
@@ -360,7 +366,7 @@ private suspend fun runProcessors(
             logId = FORGE_LIKE_INSTALL_ID,
             jvmArgs = jvmArgs,
             prefixArgs = { null },
-            jre = Jre.JRE_8,
+            jre = processorJre,
             userHome = tempGameDir.absolutePath.trimEnd('\\'),
             postSummary = "$loaderName $taskStr ($step/${commandList.size})",
             postProgress = NoticeProgress(commandList.size, step)

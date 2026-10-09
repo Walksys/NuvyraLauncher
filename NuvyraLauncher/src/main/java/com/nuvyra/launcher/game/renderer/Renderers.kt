@@ -21,7 +21,6 @@ package com.nuvyra.launcher.game.renderer
 import com.nuvyra.launcher.game.renderer.renderers.FreedrenoRenderer
 import com.nuvyra.launcher.game.renderer.renderers.GL4ESRenderer
 import com.nuvyra.launcher.game.renderer.renderers.KopperZinkRenderer
-import com.nuvyra.launcher.game.renderer.renderers.LTWRenderer
 import com.nuvyra.launcher.game.renderer.renderers.NGGL4ESRenderer
 import com.nuvyra.launcher.game.renderer.renderers.PanfrostRenderer
 import com.nuvyra.launcher.game.renderer.renderers.VirGLRenderer
@@ -51,7 +50,6 @@ object Renderers {
         addRenderers(
             NGGL4ESRenderer,
             GL4ESRenderer,
-            LTWRenderer,
             KopperZinkRenderer,
             VirGLRenderer,
             FreedrenoRenderer,

@@ -40,6 +40,7 @@ class GameScreenRecorder(private val source: View) {
 
     fun start(): File? {
         if (!running.compareAndSet(false, true)) return output
+        track = -1
         val sourceWidth = source.width.coerceAtLeast(2)
         val sourceHeight = source.height.coerceAtLeast(2)
         val scale = minOf(1f, 1280f / sourceWidth, 720f / sourceHeight)
@@ -83,6 +84,7 @@ class GameScreenRecorder(private val source: View) {
                 output?.delete()
             } finally {
                 codec = null
+                track = -1
                 muxer = null
                 inputSurface?.release()
                 inputSurface = null
